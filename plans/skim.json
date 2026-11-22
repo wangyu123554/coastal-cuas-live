@@ -1,0 +1,311 @@
+{
+  "title": "贴地拉起再砸",
+  "side": "blue",
+  "tasks": [
+    {
+      "actor": "blue_n1_a",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.94465271289975,
+          "lon": 121.9308115325111,
+          "altitude_m": 31.0,
+          "speed_mps": 44.0
+        },
+        {
+          "lat": 30.93656791232483,
+          "lon": 121.94232981810559,
+          "altitude_m": 41.0,
+          "speed_mps": 44.0
+        },
+        {
+          "lat": 30.924889867049945,
+          "lon": 121.93290576625554,
+          "altitude_m": 486.0,
+          "speed_mps": 44.0
+        },
+        {
+          "lat": 30.9195,
+          "lon": 121.9308115325111,
+          "altitude_m": 6.0,
+          "speed_mps": 44.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_n1_a",
+      "primitive": "DELAYED_START",
+      "start_sec": 7.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_n1_b",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.916805066475025,
+          "lon": 121.9632721555501,
+          "altitude_m": 46.0,
+          "speed_mps": 68.0
+        },
+        {
+          "lat": 30.926686489399927,
+          "lon": 121.95175386995562,
+          "altitude_m": 26.0,
+          "speed_mps": 68.0
+        },
+        {
+          "lat": 30.918601688825007,
+          "lon": 121.9391884674889,
+          "altitude_m": 766.0,
+          "speed_mps": 68.0
+        },
+        {
+          "lat": 30.920937297879984,
+          "lon": 121.93541884674889,
+          "altitude_m": 6.0,
+          "speed_mps": 68.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_n1_b",
+      "primitive": "DELAYED_START",
+      "start_sec": 19.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_e1_a",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.8997371541502,
+          "lon": 121.91929324691661,
+          "altitude_m": 21.0,
+          "speed_mps": 51.0
+        },
+        {
+          "lat": 30.91141519942508,
+          "lon": 121.90986919506658,
+          "altitude_m": 56.0,
+          "speed_mps": 51.0
+        },
+        {
+          "lat": 30.92129662234998,
+          "lon": 121.92767018189441,
+          "altitude_m": 326.0,
+          "speed_mps": 51.0
+        },
+        {
+          "lat": 30.9195,
+          "lon": 121.9391884674889,
+          "altitude_m": 6.0,
+          "speed_mps": 51.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_e1_b",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.932076356449873,
+          "lon": 121.91196342881103,
+          "altitude_m": 36.0,
+          "speed_mps": 90.0
+        },
+        {
+          "lat": 30.93836453467481,
+          "lon": 121.9266230650222,
+          "altitude_m": 24.0,
+          "speed_mps": 90.0
+        },
+        {
+          "lat": 30.923093244699963,
+          "lon": 121.93709423374446,
+          "altitude_m": 916.0,
+          "speed_mps": 90.0
+        },
+        {
+          "lat": 30.920218648939993,
+          "lon": 121.935,
+          "altitude_m": 6.0,
+          "speed_mps": 90.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_e1_b",
+      "primitive": "DELAYED_START",
+      "start_sec": 34.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_s1_a",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.91231351060007,
+          "lon": 121.9548952205723,
+          "altitude_m": 61.0,
+          "speed_mps": 57.0
+        },
+        {
+          "lat": 30.922194933524974,
+          "lon": 121.96431927242233,
+          "altitude_m": 46.0,
+          "speed_mps": 57.0
+        },
+        {
+          "lat": 30.915008444125043,
+          "lon": 121.94128270123336,
+          "altitude_m": 246.0,
+          "speed_mps": 57.0
+        },
+        {
+          "lat": 30.9195,
+          "lon": 121.935,
+          "altitude_m": 6.0,
+          "speed_mps": 57.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_s1_a",
+      "primitive": "DELAYED_START",
+      "start_sec": 13.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_s1_b",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.940161157024793,
+          "lon": 121.93709423374446,
+          "altitude_m": 26.0,
+          "speed_mps": 42.0
+        },
+        {
+          "lat": 30.92848311174991,
+          "lon": 121.92138748066107,
+          "altitude_m": 36.0,
+          "speed_mps": 42.0
+        },
+        {
+          "lat": 30.92129662234998,
+          "lon": 121.9433769349778,
+          "altitude_m": 646.0,
+          "speed_mps": 42.0
+        },
+        {
+          "lat": 30.920937297879984,
+          "lon": 121.93541884674889,
+          "altitude_m": 6.0,
+          "speed_mps": 42.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_s1_b",
+      "primitive": "DELAYED_START",
+      "start_sec": 46.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_w1_a",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.905127021200144,
+          "lon": 121.9391884674889,
+          "altitude_m": 51.0,
+          "speed_mps": 73.0
+        },
+        {
+          "lat": 30.897940531800216,
+          "lon": 121.94756540246671,
+          "altitude_m": 31.0,
+          "speed_mps": 73.0
+        },
+        {
+          "lat": 30.916805066475025,
+          "lon": 121.93290576625554,
+          "altitude_m": 526.0,
+          "speed_mps": 73.0
+        },
+        {
+          "lat": 30.9195,
+          "lon": 121.9308115325111,
+          "altitude_m": 6.0,
+          "speed_mps": 73.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_w1_a",
+      "primitive": "DELAYED_START",
+      "start_sec": 3.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "blue_w1_b",
+      "primitive": "MOVE_ROUTE",
+      "start_sec": 0.0,
+      "end": "impact",
+      "waypoints": [
+        {
+          "lat": 30.924889867049945,
+          "lon": 121.90463361070545,
+          "altitude_m": 16.0,
+          "speed_mps": 61.0
+        },
+        {
+          "lat": 30.915906755300036,
+          "lon": 121.91824613004438,
+          "altitude_m": 66.0,
+          "speed_mps": 61.0
+        },
+        {
+          "lat": 30.923991555874956,
+          "lon": 121.93185864938333,
+          "altitude_m": 386.0,
+          "speed_mps": 61.0
+        },
+        {
+          "lat": 30.9195,
+          "lon": 121.9391884674889,
+          "altitude_m": 6.0,
+          "speed_mps": 61.0
+        }
+      ]
+    },
+    {
+      "actor": "blue_w1_b",
+      "primitive": "DELAYED_START",
+      "start_sec": 25.0,
+      "end": "",
+      "waypoints": []
+    }
+  ]
+}

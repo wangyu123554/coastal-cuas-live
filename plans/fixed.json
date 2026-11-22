@@ -1,0 +1,90 @@
+{
+  "title": "某临海城市固定阵地",
+  "side": "red",
+  "tasks": [
+    {
+      "actor": "radar_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "radar_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "eo_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "eo_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "jam_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "jam_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "laser_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "laser_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "net_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "net_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "hunter_1",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    },
+    {
+      "actor": "hunter_2",
+      "primitive": "HOLD",
+      "start_sec": 0.0,
+      "end": "",
+      "waypoints": []
+    }
+  ]
+}

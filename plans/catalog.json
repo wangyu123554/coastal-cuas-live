@@ -1,0 +1,27 @@
+[
+  {
+    "file": "fixed.json",
+    "side": "red",
+    "title": "某临海城市固定阵地"
+  },
+  {
+    "file": "leap.json",
+    "side": "blue",
+    "title": "跃起俯冲撞击"
+  },
+  {
+    "file": "wave.json",
+    "side": "blue",
+    "title": "波浪下降撞击"
+  },
+  {
+    "file": "skim.json",
+    "side": "blue",
+    "title": "贴地拉起再砸"
+  },
+  {
+    "file": "stairs.json",
+    "side": "blue",
+    "title": "错层阶梯撞击"
+  }
+]

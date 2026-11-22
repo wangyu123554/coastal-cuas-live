@@ -1,0 +1,1864 @@
+include_once coastal_types.txt
+end_time 600 sec
+frame_time 0.25 sec
+random_seed 20261114
+event_pipe
+   file replay.aer
+   use_preset default
+end_event_pipe
+csv_event_output
+   file events.csv
+   enable SIMULATION_COMPLETE
+   enable SENSOR_TRACK_INITIATED
+   enable WEAPON_FIRED
+   enable WEAPON_HIT
+   enable WEAPON_MISSED
+   enable PLATFORM_BROKEN
+   enable JAMMING_REQUEST_INITIATED
+end_csv_event_output
+execute at_interval_of 1 sec
+   FileIO states = FileIO();
+   if (states.Open("states.csv", "append"))
+   {
+      for (int i = 0; i < WsfSimulation.PlatformCount(); i = i + 1)
+      {
+         WsfPlatform e = WsfSimulation.PlatformEntry(i);
+         states.Writeln(write_str(TIME_NOW, ",", e.Name(), ",", e.Side(), ",", e.Type(), ",", (int)(e.Latitude() * 1000000.0), ",", (int)(e.Longitude() * 1000000.0), ",", e.Altitude(), ",", e.Speed(), ",", e.Heading()));
+      }
+      states.Close();
+   }
+end_execute
+
+# Coastal airport baseline. Synthetic layout, not a surveyed site plan.
+
+platform radar_1 CT_RADAR_SECTOR
+   side red
+   position 30.923992n 121.935000e altitude 6.0 m
+   heading 0 deg
+end_platform
+
+platform radar_2 CT_RADAR_ROT
+   side red
+   position 30.915008n 121.935000e altitude 6.0 m
+   heading 0 deg
+end_platform
+
+platform eo_1 CT_EO
+   side red
+   position 30.919859n 121.931021e altitude 6.0 m
+   heading 180 deg
+end_platform
+
+platform eo_2 CT_EO
+   side red
+   position 30.919859n 121.938979e altitude 6.0 m
+   heading 180 deg
+end_platform
+
+platform jam_1 CT_RF
+   side red
+   position 30.919500n 121.932382e altitude 6.0 m
+   heading 270 deg
+end_platform
+
+platform jam_2 CT_RF
+   side red
+   position 30.919500n 121.937618e altitude 6.0 m
+   heading 90 deg
+end_platform
+
+platform laser_1 CT_LASER
+   side red
+   position 30.920847n 121.935000e altitude 6.0 m
+   heading 0 deg
+end_platform
+
+platform laser_2 CT_LASER
+   side red
+   position 30.918153n 121.935000e altitude 6.0 m
+   heading 180 deg
+end_platform
+
+platform net_1 CT_NET
+   side red
+   position 30.920039n 121.935000e altitude 6.0 m
+   heading 0 deg
+end_platform
+
+platform net_2 CT_NET
+   side red
+   position 30.919141n 121.935000e altitude 6.0 m
+   heading 180 deg
+end_platform
+
+platform hunter_1 CT_HUNTER
+   side red
+   position 30.919500n 121.928194e altitude 6.0 m
+   heading 270 deg
+end_platform
+
+platform hunter_2 CT_HUNTER
+   side red
+   position 30.919500n 121.941806e altitude 6.0 m
+   heading 90 deg
+end_platform
+
+platform rw_w CT_PROTECT
+   side gold
+   position 30.919500n 121.930811e altitude 6.0 m
+end_platform
+
+platform rw_e CT_PROTECT
+   side gold
+   position 30.919500n 121.939189e altitude 6.0 m
+end_platform
+
+platform apron CT_PROTECT
+   side gold
+   position 30.920219n 121.935000e altitude 6.0 m
+end_platform
+
+platform terminal CT_PROTECT
+   side gold
+   position 30.920937n 121.935419e altitude 6.0 m
+end_platform
+
+platform blue_n1_a CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n1_b CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n1_c CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e1_a CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e1_b CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e1_c CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s1_a CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s1_b CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s1_c CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w1_a CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w1_b CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w1_c CT_UAV
+   side blue
+   creation_time 0 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n2_a CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n2_b CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n2_c CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e2_a CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e2_b CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e2_c CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s2_a CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s2_b CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s2_c CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w2_a CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w2_b CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w2_c CT_UAV
+   side blue
+   creation_time 80 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n3_a CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n3_b CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n3_c CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e3_a CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e3_b CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e3_c CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s3_a CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s3_b CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s3_c CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w3_a CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w3_b CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w3_c CT_UAV
+   side blue
+   creation_time 160 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n4_a CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n4_b CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n4_c CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e4_a CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e4_b CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e4_c CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s4_a CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s4_b CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s4_c CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w4_a CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w4_b CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w4_c CT_UAV
+   side blue
+   creation_time 240 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n5_a CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n5_b CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n5_c CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e5_a CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e5_b CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e5_c CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s5_a CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s5_b CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s5_c CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w5_a CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w5_b CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w5_c CT_UAV
+   side blue
+   creation_time 320 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n6_a CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.959924n 121.936885e altitude 356.0 m
+   route
+      position 30.959924n 121.936885e altitude 356.0 m speed 40 m/s
+      position 30.926681n 121.935335e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n6_b CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.959924n 121.935000e altitude 406.0 m
+   route
+      position 30.959924n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.928123n 121.935342e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_n6_c CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.959924n 121.933115e altitude 386.0 m
+   route
+      position 30.959924n 121.933115e altitude 386.0 m speed 40 m/s
+      position 30.927399n 121.934659e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e6_a CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.917883n 121.982120e altitude 356.0 m
+   route
+      position 30.917883n 121.982120e altitude 356.0 m speed 40 m/s
+      position 30.919213n 121.943370e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e6_b CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.919500n 121.982120e altitude 406.0 m
+   route
+      position 30.919500n 121.982120e altitude 406.0 m speed 40 m/s
+      position 30.920680n 121.943791e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_e6_c CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.921117n 121.982120e altitude 386.0 m
+   route
+      position 30.921117n 121.982120e altitude 386.0 m speed 40 m/s
+      position 30.920378n 121.943375e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s6_a CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.879076n 121.933115e altitude 356.0 m
+   route
+      position 30.879076n 121.933115e altitude 356.0 m speed 40 m/s
+      position 30.912319n 121.934665e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s6_b CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.879076n 121.935000e altitude 406.0 m
+   route
+      position 30.879076n 121.935000e altitude 406.0 m speed 40 m/s
+      position 30.913751n 121.935347e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_s6_c CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.879076n 121.936885e altitude 386.0 m
+   route
+      position 30.879076n 121.936885e altitude 386.0 m speed 40 m/s
+      position 30.913038n 121.935329e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w6_a CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.921117n 121.887880e altitude 356.0 m
+   route
+      position 30.921117n 121.887880e altitude 356.0 m speed 40 m/s
+      position 30.919787n 121.926630e altitude 356.0 m speed 40 m/s
+      position 30.919500n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.919500);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w6_b CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.919500n 121.887880e altitude 406.0 m
+   route
+      position 30.919500n 121.887880e altitude 406.0 m speed 40 m/s
+      position 30.920684n 121.927048e altitude 406.0 m speed 40 m/s
+      position 30.920937n 121.935419e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920937);
+      PLATFORM.SetAuxData("dest_lon", 121.935419);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+platform blue_w6_c CT_UAV
+   side blue
+   creation_time 400 sec
+   position 30.917883n 121.887880e altitude 386.0 m
+   route
+      position 30.917883n 121.887880e altitude 386.0 m speed 40 m/s
+      position 30.919804n 121.926637e altitude 386.0 m speed 40 m/s
+      position 30.920219n 121.935000e altitude 6.0 m speed 40 m/s
+   end_route
+   at_end_of_path stop
+   on_initialize
+      PLATFORM.SetAuxData("dest_lat", 30.920219);
+      PLATFORM.SetAuxData("dest_lon", 121.935000);
+      PLATFORM.SetAuxData("dest_alt", 281.0);
+      PLATFORM.SetAuxData("jam_t", -1.0);
+      PLATFORM.SetAuxData("jam_mark", 0.0);
+   end_on_initialize
+end_platform
+
+
+
+script bool CT_Apply(string actor, string verb, string wantName, double wantRaw)
+   bool known = false;
+   if (actor == "eo_1" || actor == "eo_2" || actor == "jam_1" || actor == "jam_2") known = true;
+   if (actor == "laser_1" || actor == "laser_2" || actor == "net_1" || actor == "net_2") known = true;
+   if (actor == "hunter_1" || actor == "hunter_2") known = true;
+   if (!known) return false;
+   WsfPlatform p = WsfSimulation.FindPlatform(actor);
+   if (!p.IsValid()) return false;
+   bool matched = false;
+   bool ok = false;
+   for (int i = 0; i < WsfSimulation.PlatformCount(); i = i + 1)
+   {
+      if (matched) continue;
+      WsfPlatform owner = WsfSimulation.PlatformEntry(i);
+      if (!owner.IsValid()) continue;
+      foreach (WsfTrack track in owner.MasterRawTrackList())
+      {
+         if (matched || !track.IsValid() || !track.LocationValid()) continue;
+         if (track.TrackId().Name() != wantName) continue;
+         double idNumber = (double) track.TrackId().Number();
+         if (idNumber < wantRaw - 0.5 || idNumber > wantRaw + 0.5) continue;
+         matched = true;
+         double range = p.GroundRangeTo(track);
+         if (verb == "OBSERVE" && (actor == "eo_1" || actor == "eo_2") && range <= 3000)
+         {
+            WsfSensor eye = p.Sensor("eo");
+            if (eye.IsValid())
+            {
+               p.SetAuxData("cue_owner", owner.Name());
+               p.SetAuxData("cue_track", track.TrackId().Name());
+               p.SetAuxData("cue_num", idNumber);
+               double rel = p.TrueBearingTo(track) - p.Heading();
+               if (rel > 180) rel = rel - 360;
+               if (rel < -180) rel = rel + 360;
+               eye.SetYaw(rel);
+               ok = true;
+            }
+         }
+         if (verb == "SOFT" && (actor == "jam_1" || actor == "jam_2") && range <= 1000)
+         {
+            string targetName = track.TargetName();
+            if (targetName != "")
+            {
+               if (actor == "jam_1") gJam1 = targetName;
+               if (actor == "jam_2") gJam2 = targetName;
+               ok = true;
+            }
+         }
+         if (verb == "HARD" && (actor == "laser_1" || actor == "laser_2") && range <= 600)
+         {
+            WsfWeapon beam = p.Weapon("beam");
+            if (beam.IsValid())
+            {
+               beam.TurnOn();
+               if (beam.TimeSinceLastFired() >= 4) ok = beam.Fire(track);
+               else ok = true;
+               if (ok && actor == "laser_1") gLaser1Tgt = track.TargetName();
+               if (ok && actor == "laser_2") gLaser2Tgt = track.TargetName();
+            }
+         }
+         if (verb == "HARD" && (actor == "net_1" || actor == "net_2") && range <= 400)
+         {
+            WsfWeapon shot = p.Weapon("shot");
+            if (shot.IsValid() && shot.QuantityRemaining() > 0)
+            {
+               if (actor == "net_1")
+               {
+                  gN1Lat = track.Latitude();
+                  gN1Lon = track.Longitude();
+                  gN1Alt = track.Altitude();
+                  gN1Owner = owner.Name();
+                  gN1Track = track.TrackId().Name();
+                  gN1Num = idNumber;
+               }
+               if (actor == "net_2")
+               {
+                  gN2Lat = track.Latitude();
+                  gN2Lon = track.Longitude();
+                  gN2Alt = track.Altitude();
+                  gN2Owner = owner.Name();
+                  gN2Track = track.TrackId().Name();
+                  gN2Num = idNumber;
+               }
+               ok = shot.Fire(track);
+            }
+         }
+         if (verb == "HARD" && (actor == "hunter_1" || actor == "hunter_2") && range >= 600 && range <= 4000)
+         {
+            bool inLaser = false;
+            WsfPlatform laser = WsfSimulation.FindPlatform("laser_1");
+            if (laser.IsValid() && laser.GroundRangeTo(track) <= 600) inLaser = true;
+            laser = WsfSimulation.FindPlatform("laser_2");
+            if (laser.IsValid() && laser.GroundRangeTo(track) <= 600) inLaser = true;
+            WsfWeapon round = p.Weapon("round");
+            if (!inLaser && round.IsValid() && round.QuantityRemaining() > 0)
+            {
+               if (actor == "hunter_1")
+               {
+                  gH1Lat = track.Latitude();
+                  gH1Lon = track.Longitude();
+                  gH1Alt = track.Altitude();
+                  gH1Owner = owner.Name();
+                  gH1Track = track.TrackId().Name();
+                  gH1Num = idNumber;
+               }
+               if (actor == "hunter_2")
+               {
+                  gH2Lat = track.Latitude();
+                  gH2Lon = track.Longitude();
+                  gH2Alt = track.Altitude();
+                  gH2Owner = owner.Name();
+                  gH2Track = track.TrackId().Name();
+                  gH2Num = idNumber;
+               }
+               ok = round.Fire(track);
+            }
+         }
+      }
+   }
+   writeln("CT_CMD ", actor, " ", verb, " ", ok, " ", TIME_NOW);
+   return ok;
+end_script
+
+script bool CT_Pick(string actor, string verb, double minR, double maxR)
+   WsfPlatform actorP = WsfSimulation.FindPlatform(actor);
+   WsfPlatform radar = WsfSimulation.FindPlatform("radar_2");
+   if (!actorP.IsValid() || !radar.IsValid()) return false;
+   if (verb == "HARD" && (actor == "laser_1" || actor == "laser_2"))
+   {
+      WsfWeapon beam = actorP.Weapon("beam");
+      if (beam.IsValid() && beam.TimeSinceLastFired() < 4) return false;
+   }
+   string sticky = "";
+   if (actor == "jam_1") sticky = gJam1;
+   if (actor == "jam_2") sticky = gJam2;
+   if (actor == "laser_1") sticky = gLaser1Tgt;
+   if (actor == "laser_2") sticky = gLaser2Tgt;
+   double bestRange = 1000000;
+   string bestId = "";
+   double bestNum = -1;
+   string bestTarget = "";
+   foreach (WsfTrack track in radar.MasterRawTrackList())
+   {
+      if (!track.IsValid() || !track.LocationValid()) continue;
+      string targetName = track.TargetName();
+      if (targetName == "") continue;
+      WsfPlatform tgt = WsfSimulation.FindPlatform(targetName);
+      if (!tgt.IsValid() || tgt.DamageFactor() >= 1) continue;
+      bool held = tgt.AuxDataExists("engaged") && tgt.AuxDataDouble("engaged") > 0;
+      if (held && targetName != sticky) continue;
+      double range = actorP.GroundRangeTo(track);
+      if (range < minR || range > maxR) continue;
+      if (verb == "OBSERVE" && tgt.AuxDataExists("looked") && tgt.AuxDataDouble("looked") > 0 && targetName != sticky) continue;
+      if (bestId == "" || range < bestRange)
+      {
+         bestRange = range;
+         bestId = track.TrackId().Name();
+         bestNum = (double) track.TrackId().Number();
+         bestTarget = targetName;
+      }
+   }
+   if (bestId == "") return false;
+   bool ok = CT_Apply(actor, verb, bestId, bestNum);
+   if (!ok) return false;
+   WsfPlatform chosen = WsfSimulation.FindPlatform(bestTarget);
+   if (!chosen.IsValid()) return true;
+   if (verb == "HARD") chosen.SetAuxData("engaged", 1);
+   if (verb == "OBSERVE") chosen.SetAuxData("looked", 1);
+   return true;
+end_script
+
+execute at_interval_of 2 sec
+   if (TIME_NOW < 8) return;
+   CT_Pick("laser_1", "HARD", 0, 600);
+   CT_Pick("laser_2", "HARD", 0, 600);
+   CT_Pick("net_1", "HARD", 0, 400);
+   CT_Pick("net_2", "HARD", 0, 400);
+   CT_Pick("hunter_1", "HARD", 600, 4000);
+   CT_Pick("hunter_2", "HARD", 600, 4000);
+   CT_Pick("jam_1", "SOFT", 0, 1000);
+   CT_Pick("jam_2", "SOFT", 0, 1000);
+   CT_Pick("eo_1", "OBSERVE", 0, 3000);
+   CT_Pick("eo_2", "OBSERVE", 0, 3000);
+end_execute
+
+script int Scale(double value, double factor)
+   double scaled = value * factor;
+   if (scaled >= 0) return (int)(scaled + 0.5);
+   return (int)(scaled - 0.5);
+end_script
+
+script void WriteTrack(string kind, string sensor, WsfPlatform observer, WsfTrack track)
+   if (!observer.IsValid() || !track.IsValid()) return;
+   if (observer.Side() != "red") return;
+   int loc = 0;
+   int alt_known = 0;
+   int vel = 0;
+   int range_ok = 0;
+   int bearing_ok = 0;
+   int elev_ok = 0;
+   int snr_ok = 0;
+   if (track.LocationValid()) loc = 1;
+   if (track.AltitudeKnown()) alt_known = 1;
+   if (track.VelocityValid()) vel = 1;
+   if (track.RangeValid()) range_ok = 1;
+   if (track.BearingValid()) bearing_ok = 1;
+   if (track.ElevationValid()) elev_ok = 1;
+   if (track.SignalToNoiseValid()) snr_ok = 1;
+   string lat_s = "na";
+   string lon_s = "na";
+   string alt_s = "na";
+   string vn_s = "na";
+   string ve_s = "na";
+   string vd_s = "na";
+   string range_s = "na";
+   string bearing_s = "na";
+   string elev_s = "na";
+   string range_sigma = "na";
+   string bearing_sigma = "na";
+   string elev_sigma = "na";
+   string snr_s = "na";
+   if (loc == 1)
+   {
+      lat_s = write_str(Scale(track.Latitude(), 10000000.0));
+      lon_s = write_str(Scale(track.Longitude(), 10000000.0));
+      if (alt_known == 1) alt_s = write_str(Scale(track.Altitude(), 1000.0));
+   }
+   if (vel == 1)
+   {
+      Vec3 velocity = track.VelocityNED();
+      vn_s = write_str(Scale(velocity.X(), 1000.0));
+      ve_s = write_str(Scale(velocity.Y(), 1000.0));
+      vd_s = write_str(Scale(velocity.Z(), 1000.0));
+   }
+   if (range_ok == 1)
+   {
+      range_s = write_str(Scale(track.Range(), 1000.0));
+      range_sigma = write_str(track.RangeErrorSigma());
+   }
+   if (bearing_ok == 1)
+   {
+      bearing_s = write_str(Scale(track.Bearing(), 1000000.0));
+      bearing_sigma = write_str(track.BearingErrorSigma());
+   }
+   if (elev_ok == 1)
+   {
+      elev_s = write_str(Scale(track.Elevation(), 1000000.0));
+      elev_sigma = write_str(track.ElevationErrorSigma());
+   }
+   if (snr_ok == 1) snr_s = write_str(track.SignalToNoise());
+   FileIO obs = FileIO();
+   if (obs.Open("tracks.csv", "append"))
+   {
+      obs.Writeln(write_str(kind, ",", Scale(TIME_NOW, 1000000.0), ",", Scale(track.UpdateTime(), 1000000.0), ",", Scale(track.StartTime(), 1000000.0), ",", observer.Name(), ",", sensor, ",", track.TrackId().Name(), ",", track.TrackId().Number(), ",", track.UpdateCount(), ",", loc, ",", alt_known, ",", vel, ",", range_ok, ",", bearing_ok, ",", elev_ok, ",", snr_ok, ",", lat_s, ",", lon_s, ",", alt_s, ",", vn_s, ",", ve_s, ",", vd_s, ",", range_s, ",", bearing_s, ",", elev_s, ",", range_sigma, ",", bearing_sigma, ",", elev_sigma, ",", snr_s));
+      obs.Close();
+   }
+   FileIO link = FileIO();
+   if (link.Open("audit_link.csv", "append"))
+   {
+      link.Writeln(write_str(Scale(TIME_NOW, 1000000.0), ",", observer.Name(), ",", sensor, ",", track.TrackId().Name(), ",", track.TrackId().Number(), ",", track.TargetName()));
+      link.Close();
+   }
+end_script
+
+script void OnInit(WsfPlatform aPlatform, WsfSensor aSensor, WsfTrack aTrack)
+   WriteTrack("init", aSensor.Name(), aPlatform, aTrack);
+end_script
+script void OnUpdate(WsfPlatform aPlatform, WsfSensor aSensor, WsfTrack aTrack)
+   WriteTrack("update", aSensor.Name(), aPlatform, aTrack);
+end_script
+script void OnCoast(WsfPlatform aPlatform, WsfSensor aSensor, WsfTrack aTrack)
+   WriteTrack("coast", aSensor.Name(), aPlatform, aTrack);
+end_script
+script void OnDrop(WsfPlatform aPlatform, WsfSensor aSensor, WsfTrack aTrack)
+   WriteTrack("drop", aSensor.Name(), aPlatform, aTrack);
+end_script
+
+observer
+   enable SENSOR_TRACK_INITIATED OnInit
+   enable SENSOR_TRACK_UPDATED OnUpdate
+   enable SENSOR_TRACK_COASTED OnCoast
+   enable SENSOR_TRACK_DROPPED OnDrop
+end_observer
+
+execute at_interval_of 0.25 sec
+   FileIO state = FileIO();
+   FileIO truth = FileIO();
+   FileIO pose = FileIO();
+   if (!state.Open("state.csv", "append")) return;
+   if (!truth.Open("truth_ledger.csv", "append"))
+   {
+      state.Close();
+      return;
+   }
+   if (!pose.Open("sensor_pose.csv", "append"))
+   {
+      state.Close();
+      truth.Close();
+      return;
+   }
+   int now_us = Scale(TIME_NOW, 1000000.0);
+   for (int i = 0; i < WsfSimulation.PlatformCount(); i = i + 1)
+   {
+      WsfPlatform e = WsfSimulation.PlatformEntry(i);
+      if (!e.IsValid()) continue;
+      Vec3 velocity = e.VelocityNED();
+      if (e.Side() == "red")
+      {
+         state.Writeln(write_str(now_us, ",", e.Name(), ",", e.Type(), ",", Scale(e.Latitude(), 10000000.0), ",", Scale(e.Longitude(), 10000000.0), ",", Scale(e.Altitude(), 1000.0), ",", Scale(velocity.X(), 1000.0), ",", Scale(velocity.Y(), 1000.0), ",", Scale(velocity.Z(), 1000.0)));
+         for (int s = 0; s < e.SensorCount(); s = s + 1)
+         {
+            WsfSensor sensor = e.SensorEntry(s);
+            if (!sensor.IsValid()) continue;
+            int turned = 0;
+            if (sensor.IsTurnedOn()) turned = 1;
+            pose.Writeln(write_str(now_us, ",", e.Name(), ",", sensor.Name(), ",", turned, ",", sensor.ActiveTrackCount(), ",", Scale(sensor.Yaw(), 1000000.0), ",", Scale(sensor.Pitch(), 1000000.0), ",", Scale(sensor.FOV_MinimumAzimuth(), 1000000.0), ",", Scale(sensor.FOV_MaximumAzimuth(), 1000000.0), ",", Scale(sensor.FOV_MinimumElevation(), 1000000.0), ",", Scale(sensor.FOV_MaximumElevation(), 1000000.0)));
+         }
+      }
+      else
+      {
+         truth.Writeln(write_str(now_us, ",", e.Name(), ",", e.Side(), ",", e.Type(), ",", Scale(e.Latitude(), 10000000.0), ",", Scale(e.Longitude(), 10000000.0), ",", Scale(e.Altitude(), 1000.0), ",", Scale(velocity.X(), 1000.0), ",", Scale(velocity.Y(), 1000.0), ",", Scale(velocity.Z(), 1000.0)));
+      }
+   }
+   state.Close();
+   truth.Close();
+   pose.Close();
+end_execute
+
+
+execute at_interval_of 0.25 sec
+   FileIO parts = FileIO();
+   if (!parts.Open("parts.csv", "append")) return;
+   int now_us = Scale(TIME_NOW, 1000000.0);
+   for (int i = 0; i < WsfSimulation.PlatformCount(); i = i + 1)
+   {
+      WsfPlatform e = WsfSimulation.PlatformEntry(i);
+      if (!e.IsValid() || e.Side() != "red") continue;
+      for (int s = 0; s < e.SensorCount(); s = s + 1)
+      {
+         WsfSensor sensor = e.SensorEntry(s);
+         if (!sensor.IsValid()) continue;
+         int turned = 0;
+         int scan_az = 0;
+         int scan_el = 0;
+         if (sensor.IsTurnedOn()) turned = 1;
+         if (sensor.CanScanInAzimuth()) scan_az = 1;
+         if (sensor.CanScanInElevation()) scan_el = 1;
+         parts.Writeln(write_str(now_us, ",", e.Name(), ",sensor,", sensor.Name(), ",", sensor.Type(), ",", turned, ",", Scale(sensor.Yaw(), 1000000.0), ",", Scale(sensor.Pitch(), 1000000.0), ",", Scale(sensor.FOV_MinimumAzimuth(), 1000000.0), ",", Scale(sensor.FOV_MaximumAzimuth(), 1000000.0), ",", Scale(sensor.FOV_MinimumElevation(), 1000000.0), ",", Scale(sensor.FOV_MaximumElevation(), 1000000.0), ",", Scale(sensor.ScanMinimumAzimuth(), 1000000.0), ",", Scale(sensor.ScanMaximumAzimuth(), 1000000.0), ",", Scale(sensor.ScanMinimumElevation(), 1000000.0), ",", Scale(sensor.ScanMaximumElevation(), 1000000.0), ",", scan_az, ",", scan_el, ",na"));
+      }
+      for (int p = 0; p < e.ProcessorCount(); p = p + 1)
+      {
+         WsfProcessor proc = e.ProcessorEntry(p);
+         if (!proc.IsValid()) continue;
+         int turned = 0;
+         if (proc.IsTurnedOn()) turned = 1;
+         parts.Writeln(write_str(now_us, ",", e.Name(), ",processor,", proc.Name(), ",", proc.Type(), ",", turned, ",na,na,na,na,na,na,na,na,na,na,na,na,na"));
+      }
+      for (int w = 0; w < e.WeaponCount(); w = w + 1)
+      {
+         WsfWeapon weapon = e.WeaponEntry(w);
+         if (!weapon.IsValid()) continue;
+         int turned = 0;
+         if (weapon.IsTurnedOn()) turned = 1;
+         parts.Writeln(write_str(now_us, ",", e.Name(), ",weapon,", weapon.Name(), ",", weapon.Type(), ",", turned, ",na,na,na,na,na,na,na,na,na,na,na,na,", write_str(weapon.QuantityRemaining())));
+      }
+   }
+   parts.Close();
+end_execute
+

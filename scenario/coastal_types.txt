@@ -1,0 +1,616 @@
+# Coastal airport counter-UAS baseline. Synthetic parameters, not equipment performance.
+# Sector radar, rotating radar, cued narrow-field ball, ESM, laser, net round, hunter round.
+# Jamming flight effect is a script, not an RF interaction.
+
+test_feature wsf_mil
+file_path C:/afsim/demos/hel/atmosphere
+include_once COEFS1064_1.txt
+
+radar_signature CT_RCS_UAV
+   constant 0.1 m^2
+end_radar_signature
+
+radar_signature CT_RCS_GROUND
+   constant 5 m^2
+end_radar_signature
+
+radar_signature CT_RCS_ROUND
+   constant 0.05 m^2
+end_radar_signature
+
+infrared_signature CT_IR_UAV
+   constant 20 watts/steradian
+end_infrared_signature
+
+optical_signature CT_OPT_UAV
+   constant 0.2 m^2
+end_optical_signature
+
+antenna_pattern CT_RADAR_ANT
+   sine_pattern
+      peak_gain 28 db
+      minimum_gain -10 db
+      azimuth_beamwidth 3 deg
+      elevation_beamwidth 10 deg
+   end_sine_pattern
+end_antenna_pattern
+
+antenna_pattern CT_ESM_ANT
+   constant 0 db
+end_antenna_pattern
+
+sensor CT_SECTOR_SENSOR WSF_RADAR_SENSOR
+   frame_time 1 sec
+   one_m2_detect_range 9 km
+   antenna_height 8 m
+   scan_mode azimuth_and_elevation
+   azimuth_scan_limits -60 deg 60 deg
+   elevation_scan_limits 0 deg 40 deg
+   transmitter
+      antenna_pattern CT_RADAR_ANT
+      power 1.2 kw
+      frequency 9400 mhz
+      pulse_width 1 usec
+      pulse_repetition_frequency 4000 hz
+   end_transmitter
+   receiver
+      antenna_pattern CT_RADAR_ANT
+      bandwidth 1 mhz
+   end_receiver
+   hits_to_establish_track 2 3
+   hits_to_maintain_track 1 3
+   ignore_domain land
+   ignore_domain surface
+   ignore_domain subsurface
+   ignore_domain space
+   ignore_same_side
+   reports_location
+   reports_range
+   reports_bearing
+end_sensor
+
+sensor CT_ROT_SENSOR WSF_RADAR_SENSOR
+   frame_time 2 sec
+   one_m2_detect_range 8 km
+   antenna_height 8 m
+   scan_mode azimuth_and_elevation
+   azimuth_scan_limits -180 deg 180 deg
+   elevation_scan_limits 0 deg 40 deg
+   transmitter
+      antenna_pattern CT_RADAR_ANT
+      power 0.6 kw
+      frequency 5600 mhz
+      pulse_width 1 usec
+      pulse_repetition_frequency 2000 hz
+   end_transmitter
+   receiver
+      antenna_pattern CT_RADAR_ANT
+      bandwidth 1 mhz
+   end_receiver
+   hits_to_establish_track 2 3
+   hits_to_maintain_track 1 3
+   ignore_domain land
+   ignore_domain surface
+   ignore_domain subsurface
+   ignore_domain space
+   ignore_same_side
+   reports_location
+   reports_range
+   reports_bearing
+end_sensor
+
+sensor CT_EO_SENSOR WSF_GEOMETRIC_SENSOR
+   frame_time 0.5 sec
+   slew_mode both
+   azimuth_slew_limits -180 deg 180 deg
+   elevation_slew_limits -10 deg 80 deg
+   azimuth_slew_rate 90 deg/s
+   elevation_slew_rate 60 deg/s
+   maximum_range 3 km
+   azimuth_field_of_view -20 deg 20 deg
+   elevation_field_of_view -15 deg 20 deg
+   ignore_same_side
+   reports_location
+end_sensor
+
+sensor CT_EMITTER WSF_RADAR_SENSOR
+   frame_time 1 sec
+   one_m2_detect_range 1 km
+   scan_mode azimuth
+   azimuth_scan_limits -180 deg 180 deg
+   transmitter
+      power 5 w
+      frequency 2400 mhz
+      bandwidth 2 mhz
+   end_transmitter
+   receiver
+      bandwidth 2 mhz
+   end_receiver
+   ignore_domain land
+   ignore_domain air
+   ignore_domain surface
+   ignore_domain subsurface
+   ignore_domain space
+   reports_bearing
+end_sensor
+
+sensor CT_ESM_SENSOR WSF_ESM_SENSOR
+   frame_time 1 sec
+   slew_mode fixed
+   maximum_range 8 km
+   receiver
+      antenna_pattern CT_ESM_ANT
+      detection_threshold 5 db
+      noise_power -180 dbw
+      internal_loss 0 db
+   end_receiver
+   frequency_band 2 ghz 3 ghz
+   ignore_same_side
+   reports_location
+   reports_bearing
+   reports_frequency
+end_sensor
+
+sensor CT_SEEKER WSF_GEOMETRIC_SENSOR
+   frame_time 0.25 sec
+   maximum_range 500 m
+   azimuth_field_of_view -30 deg 30 deg
+   elevation_field_of_view -20 deg 20 deg
+   ignore_same_side
+   reports_location
+end_sensor
+
+processor CT_TRACKS WSF_TRACK_PROCESSOR
+end_processor
+
+weapon_effects CT_HEL_FX WSF_HEL_LETHALITY
+   category AIRCRAFT
+      minimum_energy 14 kj
+      damage_radius 10 cm
+   end_category
+end_weapon_effects
+
+weapon CT_BEAM WSF_LASER_WEAPON
+   firing_time 4 sec
+   weapon_effects CT_HEL_FX
+   fluence_model default
+      aperture_diameter 0.2 meters
+      power 5 kw
+      wavelength 1064e-9 meter
+   end_fluence_model
+end_weapon
+
+weapon_effects CT_NET_FX WSF_GRADUATED_LETHALITY
+   radius_and_pk 25 m 1
+end_weapon_effects
+
+platform_type CT_NET_ROUND WSF_PLATFORM
+   icon missile
+   side red
+   category AIRCRAFT
+   mover WSF_AIR_MOVER
+   end_mover
+   processor fuse WSF_AIR_TARGET_FUSE
+      max_time_of_flight_to_detonate 5 sec
+   end_processor
+   processor seeker WSF_PERFECT_TRACKER
+      update_interval 0.25 sec
+   end_processor
+   processor guide CT_NET_GUIDE
+   end_processor
+   weapon_effects CT_NET_FX
+end_platform_type
+
+weapon CT_NET_WPN WSF_EXPLICIT_WEAPON
+   launched_platform_type CT_NET_ROUND
+   quantity 6
+   firing_delay 0.5 sec
+   salvo_interval 2 sec
+end_weapon
+
+weapon_effects CT_HUNTER_FX WSF_GRADUATED_LETHALITY
+   radius_and_pk 20 m 1
+end_weapon_effects
+
+platform_type CT_HUNTER_BODY WSF_PLATFORM
+   icon missile
+   side red
+   category AIRCRAFT
+   radar_signature CT_RCS_ROUND
+   mover WSF_AIR_MOVER
+   end_mover
+   sensor seeker CT_SEEKER
+      on
+      processor tracks
+   end_sensor
+   processor tracks CT_TRACKS
+   end_processor
+   processor fuse WSF_AIR_TARGET_FUSE
+      time_of_flight_to_arm 1 sec
+      max_time_of_flight_to_detonate 120 sec
+   end_processor
+   processor guide CT_HUNTER_GUIDE
+   end_processor
+   weapon_effects CT_HUNTER_FX
+end_platform_type
+
+script_variables
+   string gJam1 = "";
+   string gJam2 = "";
+   string gLaser1Tgt = "";
+   string gLaser2Tgt = "";
+   int gNetSeen = 0;
+   double gH1Lat = 0;
+   double gH1Lon = 0;
+   double gH1Alt = 0;
+   string gH1Owner = "";
+   string gH1Track = "";
+   double gH1Num = 0;
+   double gH2Lat = 0;
+   double gH2Lon = 0;
+   double gH2Alt = 0;
+   string gH2Owner = "";
+   string gH2Track = "";
+   double gH2Num = 0;
+   double gN1Lat = 0;
+   double gN1Lon = 0;
+   double gN1Alt = 0;
+   string gN1Owner = "";
+   string gN1Track = "";
+   double gN1Num = 0;
+   double gN2Lat = 0;
+   double gN2Lon = 0;
+   double gN2Alt = 0;
+   string gN2Owner = "";
+   string gN2Track = "";
+   double gN2Num = 0;
+end_script_variables
+
+processor CT_HUNTER_GUIDE WSF_SCRIPT_PROCESSOR
+   update_interval 0.25 sec
+   on_initialize
+      WsfPlatform left = WsfSimulation.FindPlatform("hunter_1");
+      WsfPlatform right = WsfSimulation.FindPlatform("hunter_2");
+      double leftRange = 1000000;
+      double rightRange = 1000000;
+      if (left.IsValid()) leftRange = PLATFORM.GroundRangeTo(left);
+      if (right.IsValid()) rightRange = PLATFORM.GroundRangeTo(right);
+      if (leftRange <= rightRange)
+      {
+         PLATFORM.SetAuxData("cue_lat", gH1Lat);
+         PLATFORM.SetAuxData("cue_lon", gH1Lon);
+         PLATFORM.SetAuxData("cue_alt", gH1Alt);
+         PLATFORM.SetAuxData("owner", gH1Owner);
+         PLATFORM.SetAuxData("track_name", gH1Track);
+         PLATFORM.SetAuxData("num", gH1Num);
+      }
+      else
+      {
+         PLATFORM.SetAuxData("cue_lat", gH2Lat);
+         PLATFORM.SetAuxData("cue_lon", gH2Lon);
+         PLATFORM.SetAuxData("cue_alt", gH2Alt);
+         PLATFORM.SetAuxData("owner", gH2Owner);
+         PLATFORM.SetAuxData("track_name", gH2Track);
+         PLATFORM.SetAuxData("num", gH2Num);
+      }
+   end_on_initialize
+   on_update
+      if (PLATFORM.TimeSinceCreation() > 120)
+      {
+         PLATFORM.SetDamageFactor(1);
+         return;
+      }
+      bool terminal = false;
+      double lat = 0;
+      double lon = 0;
+      double alt = 0;
+      foreach (WsfTrack track in PLATFORM.MasterRawTrackList())
+      {
+         if (terminal || !track.IsValid() || !track.LocationValid()) continue;
+         if (track.SensorName() != "seeker") continue;
+         lat = track.Latitude();
+         lon = track.Longitude();
+         alt = track.Altitude();
+         terminal = true;
+      }
+      if (!terminal && PLATFORM.AuxDataExists("owner"))
+      {
+         WsfPlatform owner = WsfSimulation.FindPlatform(PLATFORM.AuxDataString("owner"));
+         double want = PLATFORM.AuxDataDouble("num");
+         string wantName = PLATFORM.AuxDataString("track_name");
+         if (owner.IsValid())
+         {
+            foreach (WsfTrack track in owner.MasterRawTrackList())
+            {
+               if (terminal || !track.IsValid() || !track.LocationValid()) continue;
+               double idNumber = (double) track.TrackId().Number();
+               if (track.TrackId().Name() != wantName) continue;
+               if (idNumber < want - 0.5 || idNumber > want + 0.5) continue;
+               lat = track.Latitude();
+               lon = track.Longitude();
+               alt = track.Altitude();
+               terminal = true;
+            }
+         }
+      }
+      if (!terminal && PLATFORM.AuxDataExists("cue_lat"))
+      {
+         lat = PLATFORM.AuxDataDouble("cue_lat");
+         lon = PLATFORM.AuxDataDouble("cue_lon");
+         alt = PLATFORM.AuxDataDouble("cue_alt");
+         if (lat != 0 || lon != 0) terminal = true;
+      }
+      if (terminal)
+      {
+         PLATFORM.GoToSpeed(60);
+         PLATFORM.GoToLocation(lat, lon, alt);
+      }
+   end_on_update
+end_processor
+
+processor CT_NET_GUIDE WSF_SCRIPT_PROCESSOR
+   update_interval 0.25 sec
+   on_initialize
+      WsfPlatform left = WsfSimulation.FindPlatform("net_1");
+      WsfPlatform right = WsfSimulation.FindPlatform("net_2");
+      double leftRange = 1000000;
+      double rightRange = 1000000;
+      if (left.IsValid()) leftRange = PLATFORM.GroundRangeTo(left);
+      if (right.IsValid()) rightRange = PLATFORM.GroundRangeTo(right);
+      if (leftRange <= rightRange)
+      {
+         PLATFORM.SetAuxData("cue_lat", gN1Lat);
+         PLATFORM.SetAuxData("cue_lon", gN1Lon);
+         PLATFORM.SetAuxData("cue_alt", gN1Alt);
+         PLATFORM.SetAuxData("owner", gN1Owner);
+         PLATFORM.SetAuxData("track_name", gN1Track);
+         PLATFORM.SetAuxData("num", gN1Num);
+      }
+      else
+      {
+         PLATFORM.SetAuxData("cue_lat", gN2Lat);
+         PLATFORM.SetAuxData("cue_lon", gN2Lon);
+         PLATFORM.SetAuxData("cue_alt", gN2Alt);
+         PLATFORM.SetAuxData("owner", gN2Owner);
+         PLATFORM.SetAuxData("track_name", gN2Track);
+         PLATFORM.SetAuxData("num", gN2Num);
+      }
+   end_on_initialize
+   on_update
+      if (PLATFORM.TimeSinceCreation() > 5)
+      {
+         PLATFORM.SetDamageFactor(1);
+         return;
+      }
+      bool terminal = false;
+      double lat = 0;
+      double lon = 0;
+      double alt = 0;
+      if (PLATFORM.AuxDataExists("owner"))
+      {
+         WsfPlatform owner = WsfSimulation.FindPlatform(PLATFORM.AuxDataString("owner"));
+         double want = PLATFORM.AuxDataDouble("num");
+         string wantName = PLATFORM.AuxDataString("track_name");
+         if (owner.IsValid())
+         {
+            foreach (WsfTrack track in owner.MasterRawTrackList())
+            {
+               if (terminal || !track.IsValid() || !track.LocationValid()) continue;
+               double idNumber = (double) track.TrackId().Number();
+               if (track.TrackId().Name() != wantName) continue;
+               if (idNumber < want - 0.5 || idNumber > want + 0.5) continue;
+               lat = track.Latitude();
+               lon = track.Longitude();
+               alt = track.Altitude();
+               terminal = true;
+            }
+         }
+      }
+      if (!terminal && PLATFORM.AuxDataExists("cue_lat"))
+      {
+         lat = PLATFORM.AuxDataDouble("cue_lat");
+         lon = PLATFORM.AuxDataDouble("cue_lon");
+         alt = PLATFORM.AuxDataDouble("cue_alt");
+         if (lat != 0 || lon != 0) terminal = true;
+      }
+      if (terminal)
+      {
+         PLATFORM.GoToSpeed(150);
+         PLATFORM.GoToLocation(lat, lon, alt);
+      }
+   end_on_update
+end_processor
+
+weapon CT_HUNTER_WPN WSF_EXPLICIT_WEAPON
+   launched_platform_type CT_HUNTER_BODY
+   quantity 4
+   firing_delay 0.5 sec
+   salvo_interval 2 sec
+end_weapon
+
+processor CT_UAV_BRAIN WSF_SCRIPT_PROCESSOR
+   update_interval 0.5 sec
+   on_update
+      if (PLATFORM.DamageFactor() >= 1) return;
+      string me = PLATFORM.Name();
+      bool held = false;
+      WsfPlatform jammer = WsfSimulation.FindPlatform("jam_1");
+      if (gJam1 == me && jammer.IsValid() && jammer.GroundRangeTo(PLATFORM) <= 1000)
+      {
+         held = true;
+      }
+      jammer = WsfSimulation.FindPlatform("jam_2");
+      if (gJam2 == me && jammer.IsValid() && jammer.GroundRangeTo(PLATFORM) <= 1000)
+      {
+         held = true;
+      }
+      if (held)
+      {
+         if (!PLATFORM.AuxDataExists("jam_mark") || PLATFORM.AuxDataDouble("jam_mark") < 1)
+         {
+            PLATFORM.SetAuxData("jam_mark", 1.0);
+            writeln("CT_JAM_HOLD ", me, " ", TIME_NOW);
+         }
+         PLATFORM.SetAuxData("jam_t", TIME_NOW);
+         PLATFORM.GoToSpeed(5);
+         PLATFORM.GoToLocation(PLATFORM.Latitude(), PLATFORM.Longitude(), PLATFORM.Altitude());
+      }
+      else
+      {
+         if (PLATFORM.AuxDataExists("jam_t") && PLATFORM.AuxDataDouble("jam_mark") > 0)
+         {
+            if (TIME_NOW < PLATFORM.AuxDataDouble("jam_t") + 5)
+            {
+               PLATFORM.GoToSpeed(5);
+               PLATFORM.GoToLocation(PLATFORM.Latitude(), PLATFORM.Longitude(), PLATFORM.Altitude());
+            }
+            else
+            {
+               PLATFORM.SetAuxData("jam_mark", 0.0);
+               writeln("CT_JAM_RELEASE ", me, " ", TIME_NOW);
+               PLATFORM.GoToSpeed(40);
+               PLATFORM.GoToLocation(PLATFORM.AuxDataDouble("dest_lat"), PLATFORM.AuxDataDouble("dest_lon"), PLATFORM.AuxDataDouble("dest_alt"));
+            }
+         }
+      }
+      for (int i = 0; i < WsfSimulation.PlatformCount(); i = i + 1)
+      {
+         WsfPlatform site = WsfSimulation.PlatformEntry(i);
+         if (!site.IsValid() || site.Side() != "gold") continue;
+         if (site.DamageFactor() >= 1) continue;
+         if (PLATFORM.GroundRangeTo(site) > 40) continue;
+         if (PLATFORM.Altitude() - site.Altitude() > 80) continue;
+         writeln("CT_IMPACT ", me, " ", site.Name(), " ", TIME_NOW);
+         site.SetDamageFactor(1);
+         PLATFORM.SetDamageFactor(1);
+         return;
+      }
+   end_on_update
+end_processor
+
+platform_type CT_RADAR_SECTOR WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   sensor search CT_SECTOR_SENSOR
+      on
+      processor tracks
+   end_sensor
+   processor tracks CT_TRACKS
+   end_processor
+end_platform_type
+
+platform_type CT_RADAR_ROT WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   sensor search CT_ROT_SENSOR
+      on
+      processor tracks
+   end_sensor
+   processor tracks CT_TRACKS
+   end_processor
+end_platform_type
+
+processor CT_EO_CUE WSF_SCRIPT_PROCESSOR
+   update_interval 0.5 sec
+   on_update
+      if (!PLATFORM.AuxDataExists("cue_num")) return;
+      WsfPlatform owner = WsfSimulation.FindPlatform(PLATFORM.AuxDataString("cue_owner"));
+      if (!owner.IsValid()) return;
+      string wantName = PLATFORM.AuxDataString("cue_track");
+      double want = PLATFORM.AuxDataDouble("cue_num");
+      foreach (WsfTrack track in owner.MasterRawTrackList())
+      {
+         if (!track.IsValid() || !track.LocationValid()) continue;
+         if (track.TrackId().Name() != wantName) continue;
+         double idNumber = (double) track.TrackId().Number();
+         if (idNumber < want - 0.5 || idNumber > want + 0.5) continue;
+         if (PLATFORM.GroundRangeTo(track) > 3000) continue;
+         double rel = PLATFORM.TrueBearingTo(track) - PLATFORM.Heading();
+         if (rel > 180) rel = rel - 360;
+         if (rel < -180) rel = rel + 360;
+         WsfSensor eye = PLATFORM.Sensor("eo");
+         if (eye.IsValid()) eye.SetYaw(rel);
+      }
+   end_on_update
+end_processor
+
+platform_type CT_EO WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   sensor eo CT_EO_SENSOR
+      on
+      processor tracks
+   end_sensor
+   processor tracks CT_TRACKS
+   end_processor
+   processor cue CT_EO_CUE
+   end_processor
+end_platform_type
+
+platform_type CT_RF WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   sensor esm CT_ESM_SENSOR
+      on
+      processor tracks
+   end_sensor
+   processor tracks CT_TRACKS
+   end_processor
+end_platform_type
+
+platform_type CT_LASER WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   weapon beam CT_BEAM
+      off
+   end_weapon
+end_platform_type
+
+platform_type CT_NET WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   weapon shot CT_NET_WPN
+   end_weapon
+end_platform_type
+
+platform_type CT_HUNTER WSF_PLATFORM
+   icon ground
+   mover WSF_GROUND_MOVER
+   end_mover
+   radar_signature CT_RCS_GROUND
+   weapon round CT_HUNTER_WPN
+   end_weapon
+end_platform_type
+
+platform_type CT_UAV WSF_PLATFORM
+   icon helicopter
+   category AIRCRAFT
+   mover WSF_AIR_MOVER
+   end_mover
+   radar_signature CT_RCS_UAV
+   infrared_signature CT_IR_UAV
+   optical_signature CT_OPT_UAV
+   sensor emitter CT_EMITTER
+      on
+   end_sensor
+   processor brain CT_UAV_BRAIN
+   end_processor
+end_platform_type
+
+platform_type CT_PROTECT WSF_PLATFORM
+   icon circle
+   mover WSF_GROUND_MOVER
+   end_mover
+end_platform_type

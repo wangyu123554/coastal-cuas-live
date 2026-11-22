@@ -1,0 +1,10 @@
+{
+  "schema": "l1.coastal-allocate/1.2",
+  "chosen_seed": 3,
+  "desk_passed": true,
+  "pointer": 0.8177,
+  "ranking_pairs": 0.8519,
+  "swap_matched": 12,
+  "sha256": "0238dc88debc4bb1695c78b4f1f681dee8a9de6d93d033c4464edbacb6e8ba51",
+  "file": "seed_3.pt"
+}
